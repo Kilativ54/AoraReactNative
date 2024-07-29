@@ -5,10 +5,10 @@ import { Text, View } from "react-native";
 export default function App() {
   return (
     <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-3xl font-bold">Aora</Text>
+      <Text className="text-3xl font-pblack">Aora</Text>
       <StatusBar style="auto" />
-      <Link href="/profile" className="text-3xl font-bold color-blue">
-        Profile
+      <Link href="/home" className="text-3xl font-bold color-blue">
+        Home
       </Link>
     </View>
   );
