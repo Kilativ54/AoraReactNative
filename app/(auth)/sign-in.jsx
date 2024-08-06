@@ -21,7 +21,7 @@ const SignIn = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
-        <View className="h-full w-full justify-center px-4 my-6">
+        <View className="min-h-[85vh] w-full justify-center px-4 my-6">
           <Image
             source={images.logo}
             resizeMode="contain"
@@ -47,7 +47,7 @@ const SignIn = () => {
           />
           <CustomButton
             title="Sign In"
-            handlePress
+            handlePress={() => setisSubmitting(true)}
             containerStyle="mt-7"
             isLoading={isSubmitting}
           />
