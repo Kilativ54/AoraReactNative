@@ -6,6 +6,8 @@ import { images } from "../constants";
 import { Image } from "react-native";
 import CustomButton from "../components/CustomButton";
 
+
+
 export default function App() {
   return (
     <SafeAreaView className="bg-primary h-full">
