@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import CustomButton from "../../components/CustomButton";
 import { Link } from "expo-router";
 import { createUser } from "../../lib/appwrite";
+import { router } from "expo-router";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -17,10 +18,23 @@ const SignUp = () => {
     password: "",
   });
 
-  const [isSubmitting, setisSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {
-    createUser();
+  const submit = async () => {
+    if (!form.username || !form.email || !form.password) {
+     Alert.alert('Error', 'Please fill in all the fields')
+    }
+    
+    setIsSubmitting(true);
+    try {
+      const result = await createUser(form.email, form.password, form.username);
+    
+      router.replace('/home');
+    } catch (error) {
+      Alert.alert('Error', error.message)
+    } finally {
+      setIsSubmitting(false)
+    }
   };
 
   return (
