@@ -21,17 +21,20 @@ const SignIn = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const submit = () => {
   const submit = async () => {
-    if ( !form.email || !form.password) {
+  const submit = async () => {
+    if ( form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all the fields");
     }
 
     setIsSubmitting(true);
     try {
        await signIn(form.email, form.password);
-
-      router.replace('/home');
+      setUser(result);
+      setIsLogged(true);
+      
+      Alert.alert("Success", "Logged in successfully");
+            router.replace('/home');
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
