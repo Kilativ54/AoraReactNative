@@ -11,11 +11,14 @@ import { RefreshControl } from "react-native";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { getAllPosts } from "../../lib/appwrite";
+import  EmptyState  from "../../components/EmptyState";
 
+
+import SearchInput from "../../components/SearchInput";
 const Search = () => {
   const { query } = useLocalSearchParams();
-  const { data: posts, refetch } = useAppwrite(searchPosts(query));
-  const { data: latestPosts } = useAppwrite(getLatestPosts);
+  const { data: posts, refetch } = useAppwrite(() => searchPosts(query));
+  
 
   useEffect(() => {
     refetch();
@@ -28,34 +31,22 @@ const Search = () => {
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => <VideoCard video={item} />}
         ListHeaderComponent={() => (
-          <View className="my-6 px-4 space-y-6">
-            <View className="justify-between items-start flex-row mb-6">
-              <View>
-                <Text className="font-pmedium text-sm text-gray-100">
-                  Welcome Back
-                </Text>
-                <Text className="text-2xl font-psemibold text-white">
-                  Vitalii
-                </Text>
-              </View>
-              <View className="mt-1.5">
-                <Image
-                  source={images.logoSmall}
-                  className="w-9 h-10"
-                  resizeMode="contain"
-                />
-              </View>
+          <View className="my-6 px-4 ">
+            <Text className="font-pmedium text-sm text-gray-100">
+              Search Results
+            </Text>
+            <Text className="text-2xl font-psemibold text-white">{query}</Text>
+            <View className="mt-6 mb-8">
+              <SearchInput initialQuery={query} />
             </View>
-
-            <SearchInput />
           </View>
         )}
-        ListEmptyComponent={() => (
-          <EmptyState
+        ListEmptyComponent={() => 
+          (<EmptyState
             title="No Videos Found"
-            subtitle="Be the first one to upload a video"
-          />
-        )}
+            subtitle="No videos found with that query"
+          />)
+        }
       />
     </SafeAreaView>
   );
