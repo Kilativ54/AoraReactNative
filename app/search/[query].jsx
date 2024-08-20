@@ -3,14 +3,9 @@ import React, { useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { searchPosts } from "../../lib/appwrite";
-import { getLatestPosts } from "../../lib/appwrite";
 import { FlatList } from "react-native";
 import VideoCard from "../../components/VideoCard";
 import useAppwrite from "../../lib/useAppwrite";
-import { RefreshControl } from "react-native";
-import { useState } from "react";
-import { Alert } from "react-native";
-import { getAllPosts } from "../../lib/appwrite";
 import  EmptyState  from "../../components/EmptyState";
 
 

@@ -1,8 +1,11 @@
 import { View, Text } from "react-native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useGlobalContext } from "./contex/GlobalProvider";
+import { GlobalProvider } from "./contex/GlobalProvider";
 
 const AuthLayout = () => {
+  
   return (
     <>
       <Stack>
@@ -10,7 +13,7 @@ const AuthLayout = () => {
         <Stack.Screen name="sign-up" options={{ headerShown: false }} />
       </Stack>
 
-      <StatusBar backgroundColor='#161622' style="light" />
+      <StatusBar backgroundColor="#161622" style="light" />
     </>
   );
 };

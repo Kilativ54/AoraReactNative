@@ -8,20 +8,20 @@ import FormField from "../../components/FormField";
 import { useState } from "react";
 import CustomButton from "../../components/CustomButton";
 import { Link } from "expo-router";
-import { signIn } from "../../lib/appwrite";
+import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { router } from "expo-router";
+import { useGlobalContext } from "../(auth)/contex/GlobalProvider";
 
 
 
 const SignIn = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+   const { setUser, setIsLogged } = useGlobalContext();
+   const [isSubmitting, setIsSubmitting] = useState(false);
+   const [form, setForm] = useState({
+     email: "",
+     password: "",
+   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const submit = async () => {
   const submit = async () => {
     if ( form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all the fields");
@@ -29,7 +29,8 @@ const SignIn = () => {
 
     setIsSubmitting(true);
     try {
-       await signIn(form.email, form.password);
+      await signIn(form.email, form.password);
+      const result = await getCurrentUser();
       setUser(result);
       setIsLogged(true);
       
@@ -41,7 +42,7 @@ const SignIn = () => {
       setIsSubmitting(false);
     }
   };
-}
+
 
   return (
     <SafeAreaView className="bg-primary h-full">

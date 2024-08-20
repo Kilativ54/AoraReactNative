@@ -10,35 +10,34 @@ import CustomButton from "../../components/CustomButton";
 import { Link } from "expo-router";
 import { createUser } from "../../lib/appwrite";
 import { router } from "expo-router";
-
-
-
+import { useGlobalContext } from "../(auth)/contex/GlobalProvider";
 
 const SignUp = () => {
+  const { setUser, setIsLogged } = useGlobalContext();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "") {
-     Alert.alert('Error', 'Please fill in all the fields')
+      Alert.alert("Error", "Please fill in all the fields");
     }
-    
+
     setIsSubmitting(true);
     try {
       const result = await createUser(form.email, form.password, form.username);
       setUser(result);
       setIsLogged(true);
 
-      router.replace('/home');
+      router.replace("/home");
     } catch (error) {
-      Alert.alert('Error', error.message)
+      Alert.alert("Error", error.message);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   };
 
