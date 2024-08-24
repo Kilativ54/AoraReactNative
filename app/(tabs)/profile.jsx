@@ -1,20 +1,29 @@
-import { View, Text } from "react-native";
-import React, { useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { View, TouchableOpacity } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getUserPosts, searchPosts } from "../../lib/appwrite";
+import { getUserPosts, signOut } from "../../lib/appwrite";
 import { FlatList } from "react-native";
 import VideoCard from "../../components/VideoCard";
 import useAppwrite from "../../lib/useAppwrite";
 import EmptyState from "../../components/EmptyState";
+import { Image } from "react-native-animatable";
+import { icons } from "../../constants";
+import InfoBox from "../../components/InfoBox";
+import { router } from "expo-router";
 
-import SearchInput from "../../components/SearchInput";
 import { useGlobalContext } from "../(auth)/contex/GlobalProvider";
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
 
-  
+  const logOut = async () => {
+    await signOut();
+    setUser(null)
+    setIsLoggedIn(false)
+
+    router.replace('/sign-in')
+  };
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
@@ -22,9 +31,37 @@ const Profile = () => {
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => <VideoCard video={item} />}
         ListHeaderComponent={() => (
-          <View>
-            
-        </View>
+          <View className="mt-6 mb-12 px-4 w -full justify-center items-center ">
+            <TouchableOpacity
+              className="w-full items-end mb-10"
+              onPress={logOut}
+            >
+              <Image
+                source={icons.logout}
+                resizeMode="contain"
+                className="w-6 h-6"
+              />
+            </TouchableOpacity>
+            <View className="w-16 h-16 border border-secondary rounded-lg items-center justify-center "></View>
+            <InfoBox
+              title={user?.name}
+              containerStyles="mt-5"
+              titleStyles="text-lg"
+            />
+            <View className="mt-5 flex-row">
+              <InfoBox
+                title={posts.length || 0}
+                subtitle="Posts"
+                containerStyles="mr-10"
+                titleStyles="text-xl"
+              />
+              <InfoBox
+                title="1.2k"
+                subtitle="Followers"
+                titleStyles="text-xl"
+              />
+            </View>
+          </View>
         )}
         ListEmptyComponent={() => (
           <EmptyState

@@ -11,7 +11,7 @@ import { useGlobalContext } from "./(auth)/contex/GlobalProvider";
 export default function App() {
   const { isLoading, isLoggedIn } = useGlobalContext();
  
-   return <Redirect href="/home"/>
+  if (!isLoading && isLoggedIn) return <Redirect href="/home" />
 
   return (
     <SafeAreaView className="bg-primary h-full">
