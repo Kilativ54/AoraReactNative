@@ -4,7 +4,7 @@ import { icons } from "../constants";
 import { useState } from "react";
 import { Video, ResizeMode } from "expo-av";
 
-const VideoCard = ({ video: { title, thumbnail, video, avatar } }) => {
+const VideoCard = ( { title, thumbnail, video, avatar,creator } ) => {
   const [play, setPlay] = useState(false);
   return (
     <View className="flex-col items-center px-4 mb-14">
@@ -12,7 +12,7 @@ const VideoCard = ({ video: { title, thumbnail, video, avatar } }) => {
         <View className="justify-center items-center flex-row flex-1">
           <View className="w-[46px] h-[46px] rounded-lg borger borger-secondary justify-center items-center p-0.5">
             <Image
-              source={{ uri: thumbnail }}
+              source={{ uri: avatar }}
               className="w-full h-full rounded-lg"
               resizeMode="cover"
             />
@@ -25,7 +25,7 @@ const VideoCard = ({ video: { title, thumbnail, video, avatar } }) => {
               className="text-xs text-gray-100 font-pregular"
               numberOfLines={1}
             >
-              'Vitalii
+              {creator}
             </Text>
           </View>
         </View>

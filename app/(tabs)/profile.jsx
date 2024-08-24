@@ -16,12 +16,12 @@ const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
 
-  const logOut = async () => {
+  const logout = async () => {
     await signOut();
-    setUser(null)
-    setIsLoggedIn(false)
+    setUser(null);
+    setIsLoggedIn(false);
 
-    router.replace('/sign-in')
+    router.replace("/sign-in");
   };
 
   return (
@@ -34,7 +34,7 @@ const Profile = () => {
           <View className="mt-6 mb-12 px-4 w -full justify-center items-center ">
             <TouchableOpacity
               className="w-full items-end mb-10"
-              onPress={logOut}
+              onPress={logout}
             >
               <Image
                 source={icons.logout}
@@ -42,7 +42,13 @@ const Profile = () => {
                 className="w-6 h-6"
               />
             </TouchableOpacity>
-            <View className="w-16 h-16 border border-secondary rounded-lg items-center justify-center "></View>
+            <View className="w-16 h-16 border border-secondary rounded-lg items-center justify-center ">
+              <Image
+                source={{ uri: user?.avatar }}
+                className="w-[90%] h-[90%] rounded-lg"
+                resizeMode="cover"
+              />
+            </View>
             <InfoBox
               title={user?.name}
               containerStyles="mt-5"

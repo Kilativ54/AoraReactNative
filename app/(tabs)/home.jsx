@@ -16,10 +16,12 @@ import { useState, useEffect } from "react";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 import VideoCard from "../../components/VideoCard";
+import { useGlobalContext } from "../(auth)/contex/GlobalProvider";
 
 const Home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
-const { data: latestPosts } = useAppwrite(getLatestPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
+  const { user, setUser, setIsLogged } = useGlobalContext();
 
 
   const [refreshing, setRefreshing] = useState(false);
@@ -36,7 +38,13 @@ const { data: latestPosts } = useAppwrite(getLatestPosts);
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <VideoCard video={item} />
+          <VideoCard
+            title={item.title}
+            thumbnail={item.thumbnail}
+            video={item.video}
+            creator={item.creator.username}
+            avatar={item.creator.avatar}
+          />
         )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
@@ -46,7 +54,7 @@ const { data: latestPosts } = useAppwrite(getLatestPosts);
                   Welcome Back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Vitalii
+                  {user.username}
                 </Text>
               </View>
               <View className="mt-1.5">

@@ -11,13 +11,9 @@ import { Link } from "expo-router";
 import { createUser } from "../../lib/appwrite";
 import { router } from "expo-router";
 import { useGlobalContext } from "../(auth)/contex/GlobalProvider";
-import { TouchableOpacity } from "react-native";
-import { icons } from "../../constants";
-import { signOut } from "../../lib/appwrite";
 
 const SignUp = () => {
-  const { setUser, setIsLogged, setIsLoggedIn } = useGlobalContext();
-  
+  const { setUser, setIsLoggedIn } = useGlobalContext();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -25,14 +21,6 @@ const SignUp = () => {
     email: "",
     password: "",
   });
-
-  const logout = async () => {
-    await signOut();
-    setUser(null);
-    setIsLoggedIn(false);
-
-    router.replace("/sign-in");
-  };
 
   const submit = async () => {
     if (form.username === "" || form.email === "" || form.password === "") {
@@ -56,13 +44,6 @@ const SignUp = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
-        <TouchableOpacity className="w-full items-end mb-10" onPress={logout}>
-          <Image
-            source={icons.logout}
-            resizeMode="contain"
-            className="w-6 h-6"
-          />
-        </TouchableOpacity>
         <View className="min-h-[85vh] w-full justify-center px-4 my-6">
           <Image
             source={images.logo}
