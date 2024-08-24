@@ -29,7 +29,15 @@ const Profile = () => {
       <FlatList
         data={posts}
         keyExtractor={(item) => item.$id}
-        renderItem={({ item }) => <VideoCard video={item} />}
+        renderItem={({ item }) => (
+          <VideoCard
+            title={item.title}
+            thumbnail={item.thumbnail}
+            video={item.video}
+            creator={item.creator.username}
+            avatar={item.creator.avatar}
+          />
+        )}
         ListHeaderComponent={() => (
           <View className="mt-6 mb-12 px-4 w -full justify-center items-center ">
             <TouchableOpacity
@@ -50,7 +58,7 @@ const Profile = () => {
               />
             </View>
             <InfoBox
-              title={user?.name}
+              title={user?.username}
               containerStyles="mt-5"
               titleStyles="text-lg"
             />
