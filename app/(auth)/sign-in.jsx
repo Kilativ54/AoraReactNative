@@ -12,18 +12,16 @@ import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { router } from "expo-router";
 import { useGlobalContext } from "../(auth)/contex/GlobalProvider";
 
-
-
 const SignIn = () => {
-   const { setUser, setIsLoggedIn } = useGlobalContext();
-   const [isSubmitting, setIsSubmitting] = useState(false);
-   const [form, setForm] = useState({
-     email: "",
-     password: "",
-   });
+  const { setUser, setIsLoggedIn } = useGlobalContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
 
   const submit = async () => {
-    if ( form.email === "" || form.password === "") {
+    if (form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all the fields");
     }
 
@@ -33,16 +31,14 @@ const SignIn = () => {
       const result = await getCurrentUser();
       setUser(result);
       setIsLoggedIn(true);
-      
-      Alert.alert("Success", "Logged in successfully");
-            router.replace('/home');
+
+      router.replace("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
       setIsSubmitting(false);
     }
   };
-
 
   return (
     <SafeAreaView className="bg-primary h-full">
