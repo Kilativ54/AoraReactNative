@@ -8,6 +8,8 @@ import { TouchableOpacity } from "react-native";
 import { icons } from "../../constants";
 import { Image } from "react-native-animatable";
 import CustomButton from "../../components/CustomButton";
+import * as DocumentPicker from "expo-document-picker";
+import {router} from "expo-router";
 
 const Create = () => {
   const [uploading, setUploading] = useState(false);
@@ -17,7 +19,48 @@ const Create = () => {
     thumbnail: null,
     prompt: "",
   });
-const submit =  () => {};
+
+  const openPicker = async (selectType) => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type:
+        selectType === "image"
+          ? ["image/png", "image/jpg"]
+          : ["video/mp4", "video/gif"],
+    });
+    if (!result.canceled) {
+      if (selectType === "image") {
+        setForm({ ...form, thumbnail: result.assets[0] });
+      }
+      if (selectType === "video") {
+        setForm({ ...form, video: result.assets[0] });
+      } else {
+        setTimeout(() => {
+          Alert.alert("Document picked", LSON.stringify(result, null, 2));
+        }, 100);
+      }
+    }
+  };
+  const submit = () => {
+    if (!form.prompt || !form.title || !form.thumbnail || !form.video) {
+      return Alert.alert("Please fill in all the fields");
+    }
+
+    setUploading(true);
+    try {
+      Alert.alert('Success', 'Post uploaded successfully');
+      router.push('/home')
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    } finally {
+      setForm({
+        title: "",
+        video: null,
+        thumbnail: null,
+        prompt: "",
+      });
+      setUploading(false);
+    }
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -35,7 +78,7 @@ const submit =  () => {};
             Upload Video
           </Text>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => openPicker("video")}>
             {form.video ? (
               <Video
                 source={{ uri: form.video.uri }}
@@ -61,7 +104,7 @@ const submit =  () => {};
           <Text className="text-base text-gray-100 font-pmedium">
             Thumbnail Image
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => openPicker("image")}>
             {form.thumbnail ? (
               <Image
                 source={{ uri: form.thumbnail.uri }}
@@ -94,7 +137,8 @@ const submit =  () => {};
           title="Submit & Publish"
           handlePress={submit}
           containerStyles="mt-7"
-        isLOading={uploading}/>
+          isLOading={uploading}
+        />
       </ScrollView>
     </SafeAreaView>
   );
