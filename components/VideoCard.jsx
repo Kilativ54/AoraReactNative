@@ -29,9 +29,7 @@ const VideoCard = ( { title, thumbnail, video, avatar,creator } ) => {
             </Text>
           </View>
         </View>
-        <View className="pt-2">
-          <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
-        </View>
+        
       </View>
 
       {play ? (
