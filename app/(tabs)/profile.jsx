@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, RefreshControl } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getUserPosts, signOut } from "../../lib/appwrite";
@@ -10,16 +10,25 @@ import { Image } from "react-native-animatable";
 import { icons } from "../../constants";
 import InfoBox from "../../components/InfoBox";
 import { router } from "expo-router";
+import { useState } from "react";
 
 import { useGlobalContext } from "../(auth)/contex/GlobalProvider";
 const Profile = () => {
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
-  const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
+  const { data: posts, refetch } = useAppwrite(() => getUserPosts(user.$id));
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
 
   const logout = async () => {
     await signOut();
-    setUser(null);
-    setIsLoggedIn(false);
+    setUser(null)
+    setIsLoggedIn(false)
 
     router.replace("/sign-in");
   };
@@ -83,6 +92,9 @@ const Profile = () => {
             subtitle="No videos found with that query"
           />
         )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </SafeAreaView>
   );
